@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>xocial ai × generative studio</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: #000;
+      color: #fff;
+      overflow: hidden;
+      height: 100vh;
+      cursor: default;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .archive-container {
+      height: 100vh;
+      display: grid;
+      grid-template-columns: 200px 1fr 250px;
+      grid-template-rows: 80px 1fr 60px;
+      grid-template-areas: 
+        "sidebar header metadata"
+        "sidebar main metadata"
+        "sidebar footer metadata";
+      position: relative;
+    }
+
+    .sidebar {
+      grid-area: sidebar;
+      background: rgba(0, 0, 0, 0.9);
+      border-right: 1px solid #333;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      z-index: 3;
+      overflow: hidden;
+    }
+
+    .index-section {
+      border-bottom: 1px solid #333;
+      padding-bottom: 20px;
+    }
+
+    .index-title {
+      font-size: 10px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .index-item {
+      font-size: 11px;
+      color: #ccc;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+
+    .index-item a {
+        color: inherit;
+        text-decoration: none;
+        transition: background-color 0.2s ease, color 0.2s ease;
+        padding: 2px 0;
+        margin: -2px 0;
+        border-radius: 3px;
+    }
+
+    .index-item:hover {
+      color: #fff;
+    }
+
+    .index-item:hover a {
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 2px 5px;
+        margin: -2px -5px;
+    }
+
+    .index-item.active {
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .archive-header {
+      grid-area: header;
+      background: rgba(0, 0, 0, 0.9);
+      border-bottom: 1px solid #333;
+      padding: 20px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 3;
+    }
+
+    .archive-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .archive-id {
+      font-size: 10px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .metadata-panel {
+      grid-area: metadata;
+      background: rgba(0, 0, 0, 0.9);
+      border-left: 1px solid #333;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      z-index: 3;
+      overflow: hidden;
+    }
+
+    .metadata-section {
+      border-bottom: 1px solid #333;
+      padding-bottom: 20px;
+    }
+
+    .metadata-section:last-child {
+      border-bottom: none;
+    }
+
+    .metadata-label {
+      font-size: 9px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .metadata-value {
+      font-size: 11px;
+      color: #ccc;
+      line-height: 1.4;
+    }
+
+    .metadata-value a {
+      color: #fff;
+      text-decoration: none;
+      transition: background-color 0.2s ease;
+      border-radius: 3px;
+      padding: 2px 0;
+      margin: -2px 0;
+    }
+
+    .metadata-value a:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 2px 5px;
+        margin: -2px -5px;
+    }
+
+    .main-content {
+      grid-area: main;
+      padding: 30px;
+      z-index: 2;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .record-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 30px;
+    }
+
+    .record-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      line-height: 0.9;
+    }
+
+    .record-subtitle {
+      font-size: 11px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 5px;
+    }
+
+    .record-date {
+      font-size: 10px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-align: right;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+      margin-bottom: 30px;
+    }
+
+    .data-table th,
+    .data-table td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #333;
+    }
+
+    .data-table th {
+      font-size: 9px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 500;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .data-table td {
+      color: #ccc;
+      font-family: 'Inter', sans-serif;
+      line-height: 1.4;
+    }
+
+    .data-table a {
+      color: #fff;
+      text-decoration: none;
+      transition: background-color 0.2s ease;
+      display: inline-block;
+      padding: 2px 0;
+      margin: -2px 0;
+      border-radius: 3px;
+    }
+
+    .data-table a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 2px 5px;
+      margin: -2px -5px;
+    }
+
+    .description-field {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid #333;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .field-label {
+      font-size: 9px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .field-content {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #ddd;
+      line-height: 1.5;
+    }
+
+    .project-field {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid #555;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .archive-footer {
+      grid-area: footer;
+      background: rgba(0, 0, 0, 0.9);
+      border-top: 1px solid #333;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 3;
+    }
+
+    .footer-left {
+      font-size: 10px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .footer-right {
+      font-size: 10px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .footer-right a {
+      color: #888;
+      text-decoration: none;
+      margin-left: 20px;
+      transition: color 0.2s ease, background-color 0.2s ease;
+      padding: 2px 0;
+      margin: -2px 0;
+      border-radius: 3px;
+    }
+
+    .footer-right a:hover {
+      color: #ccc;
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 2px 5px;
+      margin: -2px -5px;
+    }
+
+    @media (max-width: 1024px) {
+      .archive-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto 1fr auto;
+        grid-template-areas: 
+          "header"
+          "sidebar"
+          "main"
+          "footer";
+        height: auto;
+        min-height: 100vh;
+      }
+      .sidebar {
+        flex-direction: row;
+        gap: 20px;
+        overflow-x: auto;
+        border-right: none;
+        border-bottom: 1px solid #333;
+      }
+      .metadata-panel {
+        display: none;
+      }
+      .main-content {
+        padding: 20px;
+      }
+      .record-title {
+        font-size: 24px;
+      }
+      body {
+        overflow-y: auto !important;
+        height: auto !important;
+      }
+    }
+
+    .status-indicator {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 8px;
+      height: 8px;
+      background: #0f0;
+      border-radius: 50%;
+      z-index: 4;
+    }
+
+    .ai-gradient {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, 
+        rgba(138, 43, 226, 0.1) 0%, 
+        rgba(30, 144, 255, 0.1) 50%, 
+        rgba(255, 20, 147, 0.1) 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+</style>
+</head>
+<body>
+<div class="ai-gradient"></div>
+<div class="status-indicator"></div>
+<div class="archive-container">
+  <div class="sidebar">
+    <div class="index-section">
+      <div class="index-title">Project Index</div>
+      <div class="index-item active">001 / AI Image Generation</div>
+      <div class="index-item">002 / Video Synthesis</div>
+      <div class="index-item">003 / Brand Identity AI</div>
+      <div class="index-item">004 / Custom Models</div>
+      <div class="index-item">005 / Client Portfolio</div>
+    </div>
+    <div class="index-section">
+      <div class="index-title">AI TOOLS</div>
+      <div class="index-item">Midjourney</div>
+      <div class="index-item">DALL-E 3</div>
+      <div class="index-item">Runway ML</div>
+      <div class="index-item">Luma Dream Machine</div>
+      <div class="index-item">Stable Diffusion</div>
+    </div>
+  </div>
+  <div class="archive-header">
+    <div class="archive-title">Xocial AI Studio</div>
+    <div class="archive-id">XOCIAL_DB_2025</div>
+  </div>
+  <div class="metadata-panel">
+    <div class="metadata-section">
+      <div class="metadata-label">Contact</div>
+      <div class="metadata-value"><a href="mailto:hello@xocial.ai">hello@xocial.ai</a></div>
+    </div>
+    <div class="metadata-section">
+      <div class="metadata-label">Partnerships</div>
+      <div class="metadata-value">midjourney<br>openai<br>runway ml<br>luma labs<br>stability ai<br>anthropic<br>adobe</div>
+    </div>
+    <div class="metadata-section">
+      <div class="metadata-label">Services</div>
+      <div class="metadata-value">2025 — ai brand identity<br>custom model training<br>video synthesis<br>social content automation</div>
+    </div>
+    <div class="metadata-section">
+      <div class="metadata-label">Version</div>
+      <div class="metadata-value">--v 2025<br>--seed xocial</div>
+    </div>
+  </div>
+  <div class="main-content">
+    <div class="record-header">
+      <div>
+        <div class="record-title">Xocial AI</div>
+        <div class="record-subtitle">generative ai × creative studio</div>
+      </div>
+      <div class="record-date">Last Updated: 2025<br>Status: Active</div>
+    </div>
+    <div class="description-field">
+      <div class="field-label">Agency_Profile</div>
+      <div class="field-content"><strong>Xocial AI</strong> is a cutting-edge generative AI agency specializing in AI-powered image and video creation for brands and businesses. We transform creative concepts into stunning visual content using the latest AI technologies. From brand identity systems to social media campaigns, we harness the power of artificial intelligence to deliver exceptional creative solutions that push the boundaries of what's possible.</div>
+    </div>
+    <div class="project-field">
+      <div class="field-label">Core_Services</div>
+      <div class="field-content"><strong>XOCIAL STUDIO</strong> — Our comprehensive AI creative laboratory, specializing in custom image generation, video synthesis, and brand identity development. We combine cutting-edge AI tools with creative expertise to deliver unparalleled visual content for the digital age.</div>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr><th>Service</th><th>Platform</th><th>Deliverable Type</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>AI Image Generation</td><td>Midjourney + DALL-E</td><td>brand assets, marketing visuals</td><td>Active</td></tr>
+        <tr><td>Video Synthesis</td><td>Runway + Luma</td><td>social content, advertisements</td><td>Active</td></tr>
+        <tr><td>Brand Identity AI</td><td>Custom Models</td><td>logo systems, visual identity</td><td>Active</td></tr>
+        <tr><td>Social Automation</td><td>Multi-Platform</td><td>content calendars, campaigns</td><td>Active</td></tr>
+        <tr><td>Custom Training</td><td>Stable Diffusion</td><td>bespoke ai models</td><td>Active</td></tr>
+        <tr><td>Creative Consulting</td><td>Strategy</td><td>ai integration, workflows</td><td>Active</td></tr>
+      </tbody>
+    </table>
+    <div class="description-field">
+      <div class="field-label">Creative_Statement</div>
+      <div class="field-content">prompt innovation_imagination_implementation --seed xocial_2025</div>
+    </div>
+  </div>
+  <div class="archive-footer">
+    <div class="footer-left">Xocial AI Studio © 2025</div>
+    <div class="footer-right">Database Version 1.0 <a href="mailto:hello@xocial.ai">Contact</a></div>
+  </div>
+</div>
+</body>
+</html>
