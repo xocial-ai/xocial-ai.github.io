@@ -414,12 +414,12 @@
 <div class="archive-container">
   <div class="sidebar">
     <div class="index-section">
-      <div class="index-title">Project Index</div>
-      <div class="index-item active">001 / AI Image Generation</div>
-      <div class="index-item">002 / Video Synthesis</div>
-      <div class="index-item">003 / Brand Identity AI</div>
-      <div class="index-item">004 / Custom Models</div>
-      <div class="index-item">005 / Client Portfolio</div>
+      <div class="index-title">Our Services</div>
+      <div class="index-item active">001 / Model Clonation</div>
+      <div class="index-item">002 / Custom Models</div>
+      <div class="index-item">003 / Product Photography</div>
+      <div class="index-item">004 / Video Production</div>
+      <div class="index-item">005 / AI Strategy</div>
     </div>
     <div class="index-section">
       <div class="index-title">AI TOOLS</div>
