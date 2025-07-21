@@ -386,22 +386,10 @@
       pointer-events: none;
       z-index: 1;
     }
-
-    #background-video {
-      position: fixed;
-      right: 0;
-      bottom: 0;
-      min-width: 100vw;
-      min-height: 100vh;
-      z-index: -1;
-      object-fit: cover;
-      opacity: 0.3;
-    }</style>
+</style>
 </head>
 <body>
-<video autoplay="" id="background-video" loop="" muted="" playsinline="">
-  <source src="https://danifpradana.github.io/media/mxvdxn-bg-02.mp4" type="video/mp4">
-</video><div class="ai-gradient"></div>
+<div class="ai-gradient"></div>
 <div class="status-indicator"></div>
 <div class="archive-container">
   <div class="sidebar">
